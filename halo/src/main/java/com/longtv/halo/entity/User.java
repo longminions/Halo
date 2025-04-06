@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Table(name="Users")
 @Data
 @NoArgsConstructor
-public class Users {
+public class User {
 	
 	@Id
 	@Column(name = "ID")
@@ -25,4 +25,7 @@ public class Users {
 
 	@Column(name = "EMAIL")
 	private String email;
+
+	public User orElseThrow(Object o) {
+	}
 }
