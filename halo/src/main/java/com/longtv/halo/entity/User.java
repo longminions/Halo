@@ -25,7 +25,4 @@ public class User {
 
 	@Column(name = "EMAIL")
 	private String email;
-
-	public User orElseThrow(Object o) {
-	}
 }
