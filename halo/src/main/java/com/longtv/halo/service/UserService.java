@@ -4,8 +4,8 @@ import com.longtv.halo.dto.UserBean;
 import com.longtv.halo.entity.User;
 import com.longtv.halo.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 @Service
 public class UserService {
@@ -14,7 +14,6 @@ public class UserService {
 
     public void createUser(UserBean userBean) {
         User user = new User();
-        user.setId(null);
         user.setFirstName(userBean.getFirstName());
         user.setFirstName(user.getLastName());
         user.setEmail(userBean.getEmail());
@@ -46,5 +45,9 @@ public class UserService {
         }
 
         userRepository.save(user);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 }

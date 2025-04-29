@@ -32,16 +32,13 @@ public class UserController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<UserBean> updateUser(@PathVariable Long id, @RequestBody UserBean userBean) {
-        return userService.updateUser(id, userBean)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+            userService.updateUser(id, userBean);
+            return ResponseEntity.accepted().build();
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        if (userService.deleteUser(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        userService.deleteUser(id);
+        return ResponseEntity.accepted().build();
     }
 }
