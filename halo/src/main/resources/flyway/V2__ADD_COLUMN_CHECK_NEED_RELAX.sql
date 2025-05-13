@@ -1,0 +1,1 @@
+ALTER TABLE Users ADD COLUMN if not exists needs_relax_notification BOOLEAN NOT NULL DEFAULT FALSE;

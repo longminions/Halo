@@ -25,4 +25,7 @@ public class User {
 
 	@Column(name = "EMAIL")
 	private String email;
+	
+	@Column(name = "NEEDS_RELAX_NOTIFICATION")
+	private boolean needsRelaxNotification;
 }
