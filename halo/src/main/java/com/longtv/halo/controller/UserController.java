@@ -3,6 +3,7 @@ package com.longtv.halo.controller;
 import com.longtv.halo.dto.UserBean;
 import com.longtv.halo.entity.User;
 import com.longtv.halo.service.UserService;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    @Autowired
     private UserService userService;
 
     @PostMapping("/registerUser")

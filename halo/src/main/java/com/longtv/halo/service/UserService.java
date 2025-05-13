@@ -3,6 +3,9 @@ package com.longtv.halo.service;
 import com.longtv.halo.dto.UserBean;
 import com.longtv.halo.entity.User;
 import com.longtv.halo.repository.UserRepository;
+import jakarta.persistence.*;
+import jakarta.transaction.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -10,14 +13,19 @@ import java.util.*;
 @Service
 public class UserService {
 
+    @Autowired
     private UserRepository  userRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+    
+    @Transactional
     public void createUser(UserBean userBean) {
         User user = new User();
         user.setFirstName(userBean.getFirstName());
         user.setFirstName(user.getLastName());
         user.setEmail(userBean.getEmail());
-        userRepository.save(user);
+        entityManager.merge(user);
     }
 
     public List<UserBean> getUserByEmail(String email) {

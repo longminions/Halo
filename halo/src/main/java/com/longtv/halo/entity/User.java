@@ -1,19 +1,19 @@
 package com.longtv.halo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="Users")
 @Data
 @NoArgsConstructor
+@Table(name="Users")
 public class User {
-	
-	@Id
+
+
+	@Id // Đánh dấu trường này là khóa chính
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_generator")
+	@SequenceGenerator(name = "user_seq_generator", sequenceName = "user_id_seq", allocationSize = 1)
 	@Column(name = "ID")
 	private Long id;
 
