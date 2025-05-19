@@ -1,0 +1,2 @@
+-- code font-end vào đây.
+-- đầu tiên tạo một nhánh riêng với tên : /dev-feature-(tính năng gì)-mô tả về tính năng
