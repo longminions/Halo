@@ -17,5 +17,4 @@ public class UserBean {
 
     @JsonProperty
     private String email;
-
 }

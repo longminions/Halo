@@ -1,6 +1,7 @@
 package com.longtv.halo.job;
 
 import com.longtv.halo.entity.*;
+import com.longtv.halo.service.*;
 import jakarta.persistence.*;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.job.builder.*;
@@ -9,6 +10,7 @@ import org.springframework.batch.core.step.builder.*;
 import org.springframework.batch.item.*;
 import org.springframework.batch.item.database.builder.*;
 import org.springframework.context.annotation.*;
+import org.springframework.kafka.core.*;
 import org.springframework.transaction.*;
 
 @Configuration
@@ -16,13 +18,16 @@ public class ScheduleNotifyRelaxBatchJob {
 	private final JobRepository jobRepository;
 	private final PlatformTransactionManager transactionManager;
 	private final EntityManagerFactory entityManagerFactory; // Cần EntityManagerFactory để đọc JPA
+
+	private final NotifyKafkaProducer notifyKafkaProducer;
 	
 	// Constructor injection
 	public ScheduleNotifyRelaxBatchJob(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-			EntityManagerFactory entityManagerFactory) {
+			EntityManagerFactory entityManagerFactory, NotifyKafkaProducer notifyKafkaProducer) {
 		this.jobRepository = jobRepository;
 		this.transactionManager = transactionManager;
 		this.entityManagerFactory = entityManagerFactory;
+		this.notifyKafkaProducer = notifyKafkaProducer;
 	}
 	
 	// === Định nghĩa các thành phần Reader, Processor, Writer ===
@@ -69,11 +74,9 @@ public class ScheduleNotifyRelaxBatchJob {
 		return messages -> {
 			// Logic gửi thông báo thực tế (email, SMS, push notification, Kafka, etc.)
 			// Trong ví dụ này, chúng ta chỉ in ra console
-			System.out.println("--- Writing Relax Notifications (Chunk) ---");
 			for (String message : messages) {
 				System.out.println(message);
-				// Ở đây bạn sẽ gọi service gửi email/Kafka/...
-				// Ví dụ: notificationService.sendEmail(user.getEmail(), "Relax Time", message);
+				notifyKafkaProducer.send(message);
 			}
 			System.out.println("--- Finished Writing Chunk ---");
 		};
@@ -106,4 +109,6 @@ public class ScheduleNotifyRelaxBatchJob {
 					       // Có thể thêm các Step khác nếu quy trình phức tạp
 					       .build(); // Hoàn thành xây dựng Job
 		}
+		
+		
 }
