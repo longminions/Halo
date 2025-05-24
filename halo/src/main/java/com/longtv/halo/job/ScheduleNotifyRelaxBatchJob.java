@@ -20,6 +20,13 @@ public class ScheduleNotifyRelaxBatchJob {
 	private final EntityManagerFactory entityManagerFactory; // Cần EntityManagerFactory để đọc JPA
 
 	private final NotifyKafkaProducer notifyKafkaProducer;
+
+private final JobRepository jobRepository;
+private final StepBuilderFactory stepBuilderFactory;
+private final PlatformTransactionManager transactionManager;
+private final EntityManagerFactory entityManagerFactory; // Cần EntityManagerFactory để đọc JPA
+private final NotifyKafkaProducer notifyKafkaProducer;
+
 	
 	// Constructor injection
 	public ScheduleNotifyRelaxBatchJob(JobRepository jobRepository, PlatformTransactionManager transactionManager,
@@ -106,9 +113,19 @@ public class ScheduleNotifyRelaxBatchJob {
 			System.out.println("--- Building scheduleNotifyRelaxJob ---");
 			return new JobBuilder("scheduleNotifyRelaxJob", jobRepository) // Tên Job và JobRepository
 					       .start(notifyRelaxStep()) // Bắt đầu Job với notifyRelaxStep
-					       // Có thể thêm các Step khác nếu quy trình phức tạp
+					       .on(String.valueOf(BatchStatus.COMPLETED))
+					       .to(getMessage()) // Nếu Step thành công, chuyển sang followGetMessage
+					       .on("*").end()
 					       .build(); // Hoàn thành xây dựng Job
 		}
+		public Step getMessage() {
+			return stepBuilderFactory.get("getMessage")
+					       .tasklet(new NotifyRelaxTasklet())
+					       .build();
+		}
+        @Bean
+        public NotifyKafkaProducer notifyKafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
+			return new NotifyKafkaProducer(kafkaTemplate);
+		}
+
 		
-		
-}
