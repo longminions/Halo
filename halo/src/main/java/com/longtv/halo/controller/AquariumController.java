@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/aqua/action")
-public class AquariumController {
+public class  AquariumController {
 	
 	private String deviceState = "OFF";
 	
@@ -17,7 +17,7 @@ public class AquariumController {
 	
 	@PostMapping("/eat")
 	private HttpStatus doEat(@RequestBody FishActionRequest fishActionReq ) {
-		aquariumAction.doEats(fishActionReq);
+		aquariumAction.doEats();
 		return HttpStatus.OK ;
 	}
 

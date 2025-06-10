@@ -9,36 +9,23 @@ import org.springframework.batch.core.repository.*;
 import org.springframework.batch.core.step.builder.*;
 import org.springframework.batch.item.*;
 import org.springframework.batch.item.database.builder.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
 import org.springframework.kafka.core.*;
 import org.springframework.transaction.*;
 
 @Configuration
 public class ScheduleNotifyRelaxBatchJob {
-	private final JobRepository jobRepository;
-	private final PlatformTransactionManager transactionManager;
-	private final EntityManagerFactory entityManagerFactory; // Cần EntityManagerFactory để đọc JPA
 
-	private final NotifyKafkaProducer notifyKafkaProducer;
 
-private final JobRepository jobRepository;
-private final StepBuilderFactory stepBuilderFactory;
-private final PlatformTransactionManager transactionManager;
-private final EntityManagerFactory entityManagerFactory; // Cần EntityManagerFactory để đọc JPA
-private final NotifyKafkaProducer notifyKafkaProducer;
+	@Autowired
+	private final EntityManagerFactory entityManagerFactory;
 
-	
-	// Constructor injection
-	public ScheduleNotifyRelaxBatchJob(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-			EntityManagerFactory entityManagerFactory, NotifyKafkaProducer notifyKafkaProducer) {
-		this.jobRepository = jobRepository;
-		this.transactionManager = transactionManager;
+	@Autowired
+	public ScheduleNotifyRelaxBatchJob(EntityManagerFactory entityManagerFactory) {
 		this.entityManagerFactory = entityManagerFactory;
-		this.notifyKafkaProducer = notifyKafkaProducer;
 	}
-	
-	// === Định nghĩa các thành phần Reader, Processor, Writer ===
-	
+
 	// ItemReader: Đọc các User cần gửi thông báo thư giãn
 	// Sử dụng JpaPagingItemReader để đọc dữ liệu từ database theo trang
 	@Bean
