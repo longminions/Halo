@@ -17,7 +17,6 @@ public class  AquariumController {
 	
 	@PostMapping("/eat")
 	private HttpStatus doEat(@RequestBody FishActionRequest fishActionReq ) {
-		aquariumAction.doEats();
 		return HttpStatus.OK ;
 	}
 
