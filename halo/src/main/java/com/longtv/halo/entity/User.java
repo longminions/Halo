@@ -2,13 +2,17 @@ package com.longtv.halo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.*;
+import org.springframework.security.core.userdetails.*;
+
+import java.util.*;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="Users")
-public class User {
+public class User implements UserDetails {
 
 
 	@Id // Đánh dấu trường này là khóa chính
@@ -28,4 +32,19 @@ public class User {
 	
 	@Column(name = "NEEDS_RELAX_NOTIFICATION")
 	private boolean needsRelaxNotification;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+	
+	@Override
+	public String getPassword() {
+		return null;
+	}
+	
+	@Override
+	public String getUsername() {
+		return null;
+	}
 }
