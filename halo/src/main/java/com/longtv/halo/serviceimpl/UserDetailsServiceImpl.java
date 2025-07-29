@@ -20,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// Tìm user theo username (hoặc email,...)
-		User user = userRepository.findByUsername(username)
+		User user = userRepository.findByFirstName(username)
 				            .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 		
 		// Trả về một implementation của UserDetails

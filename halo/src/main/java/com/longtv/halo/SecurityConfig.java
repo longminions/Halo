@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.*;
 import org.springframework.security.config.annotation.authentication.configuration.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
+import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.config.http.*;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.*;
@@ -26,6 +27,7 @@ public class SecurityConfig {
 	private final UserDetailsServiceImpl userDetailsServiceImpl;
 	
 	private final AuthEntryPointJwt unauthorizedHandler; // Xử lý lỗi 401 Unauthorized
+	
 	// Constructor injection
 	public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, AuthEntryPointJwt unauthorizedHandler) {
 		this.userDetailsServiceImpl = userDetailsServiceImpl;
@@ -57,7 +59,7 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable()) // Tắt CSRF cho API RESTful
+		http.csrf(AbstractHttpConfigurer::disable) // Tắt CSRF cho API RESTful
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)) // Xử lý lỗi 401
 				.sessionManagement(
 						session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // KHÔNG DÙNG SESSION
