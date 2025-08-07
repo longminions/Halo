@@ -19,6 +19,16 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="downloadAnnotationsAutomatically" value="true" />
+        <option name="downloadDocsAutomatically" value="true" />
+        <option name="downloadSourcesAutomatically" value="true" />
+        <option name="workspaceImportForciblyTurnedOn" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -40,6 +50,7 @@
     "Maven.project-root [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.Application.executor": "Debug",
     "Spring Boot.HaloApplication.executor": "Debug",
     "git-widget-placeholder": "dev",
     "jdk.selected.JAVA_MODULE": "17",
@@ -54,7 +65,7 @@
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.importing",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -65,7 +76,7 @@
     ]
   }
 }]]></component>
-  <component name="RunManager" selected="Spring Boot.HaloApplication">
+  <component name="RunManager" selected="Spring Boot.Application">
     <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="gateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.halo.gateway.Application" />
@@ -93,7 +104,7 @@
       <workItem from="1754555251443" duration="320000" />
       <workItem from="1754555607839" duration="1334000" />
       <workItem from="1754559318317" duration="1408000" />
-      <workItem from="1754561167628" duration="1028000" />
+      <workItem from="1754561167628" duration="2147000" />
     </task>
     <servers />
   </component>
