@@ -1,1 +1,7 @@
-ALTER TABLE Users ADD COLUMN if not exists needs_relax_notification BOOLEAN NOT NULL DEFAULT FALSE;
+CREATE TABLE USERS (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    needs_relax_notification BOOLEAN NOT NULL DEFAULT FALSE
+);
