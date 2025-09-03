@@ -15,7 +15,7 @@ import java.util.*;
 @Slf4j
 public class JwtTokenProvider {
 
-private final JwtProperties jwtProperties;
+	private final JwtProperties jwtProperties;
 
 	/**
 	 *

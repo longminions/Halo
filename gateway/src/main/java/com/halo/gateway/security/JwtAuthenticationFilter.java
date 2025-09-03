@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				String username = jwtTokenProvider.getUsernameFromToken(jwt);
 				String[] roles = jwtTokenProvider.getRolesFromToken(jwt);
 				
-				UserDetails userDetails = buildUserDetailsFromJwt(username, roles); // Phương thức hỗ trợ
+				UserDetails userDetails = buildUserDetailsFromJwt(username, roles);
 				
 				UsernamePasswordAuthenticationToken authentication =
 						new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
