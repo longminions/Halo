@@ -2,6 +2,7 @@ package com.longtv.halo.service;
 
 import com.longtv.halo.dto.LoginRequest;
 import com.longtv.halo.dto.LoginResponse;
+import com.longtv.halo.entity.RefreshToken;
 import com.longtv.halo.entity.User;
 import com.longtv.halo.repository.UserRepository;
 import com.longtv.halo.security.JwtTokenProvider;
@@ -28,7 +29,7 @@ public class AuthService {
         User user = userRepository.findByUsername(loginRequest.username())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
-        if (user.isInactive())
+
 
         if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
@@ -40,8 +41,8 @@ public class AuthService {
             );
         }
 
-        String accessToken = jwtTokenProvider.generateAccessToken(user);
-        String refreshToken = jwtTokenProvider.generateRefreshToken(user);
+        String accessToken = jwtTokenProvider.generateAccessToken(user, loginRequest);
+        RefreshToken refreshToken = jwtTokenProvider.generateRefreshToken(user);
 
     }
 
