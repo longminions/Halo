@@ -13,7 +13,6 @@ import org.springframework.stereotype.*;
  * @version 1.0
  */
 @Data
-@Component
 @ConfigurationProperties(prefix = "jwt")
 public class JwtProperties {
 	private String secret;

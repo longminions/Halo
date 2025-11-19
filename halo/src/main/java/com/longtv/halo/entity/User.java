@@ -1,31 +1,38 @@
 package com.longtv.halo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name="Users")
+@Table(name = "users")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_generator")
-	@SequenceGenerator(name = "user_seq_generator", sequenceName = "user_id_seq", allocationSize = 1)
-	@Column(name = "ID")
-	private Long id;
+    @Column(nullable = false, unique = true, length = 50)
+    private String username;
 
-	@Column(name = "FIRST_NAME")
-	private String firstName;
+    @Column(nullable = false)
+    private String password;
 
-	@Column(name = "LAST_NAME")
-	private String lastName;
+    @Column(nullable = false)
+    private boolean active = true;
 
-	@Column(name = "EMAIL")
-	private String email;
-	
-	@Column(name = "NEEDS_RELAX_NOTIFICATION")
-	private boolean needsRelaxNotification;
+    @Column(nullable = false)
+    private boolean locked = false;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Acl> acls = new ArrayList<>();
+
 }

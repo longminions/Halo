@@ -1,21 +1,26 @@
 package com.halo.gateway.jwt;
 
-import com.halo.gateway.common.*;
-import com.halo.gateway.config.*;
+import com.halo.gateway.common.CommonsKeys;
+import com.halo.gateway.config.JwtProperties;
 import io.jsonwebtoken.*;
-import lombok.*;
-import lombok.extern.slf4j.*;
-import org.springframework.stereotype.*;
-
+import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-@Data
 @Component
-@AllArgsConstructor
 @Slf4j
 public class JwtTokenProvider {
 
-private final JwtProperties jwtProperties;
+	private final JwtProperties jwtProperties;
+    private final SecretKey secretKey;
+
+    public JwtTokenProvider(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+        this.secretKey = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
+    }
 
 	/**
 	 *
@@ -28,7 +33,8 @@ private final JwtProperties jwtProperties;
 		// Logic to generate JWT token using jwtProperties
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("username", username);
-		claims.put("roles", roles); // One user can have multiple roles
+		claims.put("roles", roles);
+        claims.put("id", userId);
 		
 		Date now = new Date();
 		Date expirationDate = new Date(
@@ -44,7 +50,7 @@ private final JwtProperties jwtProperties;
 					.setIssuedAt(now)
 					.setExpiration(expirationDate)
 					.setId(UUID.randomUUID().toString())
-					.signWith(SignatureAlgorithm.HS256, jwtProperties.getSecret())
+					.signWith(secretKey)
 					.compact();
 	}
 	
@@ -55,23 +61,28 @@ private final JwtProperties jwtProperties;
 	 * @param token the JWT token to validate
 	 * @return true if the token is valid, false otherwise
 	 */
-	public boolean validateToken(String token) {
-		try {
-			Jwts.parser()
-					.setSigningKey(jwtProperties.getSecret()).build()
-					.parseClaimsJws(token);
-			return true;
-		} catch (MalformedJwtException ex) {
-			log.error("Invalid JWT token: {}", ex.getMessage());
-		} catch (ExpiredJwtException ex) {
-			log.error("JWT token is expired: {}", ex.getMessage());
-		} catch (UnsupportedJwtException ex) {
-			log.error("JWT token is unsupported: {}", ex.getMessage());
-		} catch (IllegalArgumentException ex) {
-			log.error("JWT claims string is empty or null: {}", ex.getMessage());
-		}
-		return false;
-	}
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token);
+            return true;
+
+        } catch (MalformedJwtException ex) {
+            log.error("Invalid JWT token: {}", ex.getMessage());
+        } catch (ExpiredJwtException ex) {
+            log.error("JWT token is expired: {}", ex.getMessage());
+        } catch (UnsupportedJwtException ex) {
+            log.error("JWT token is unsupported: {}", ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            log.error("JWT claims string is empty or null: {}", ex.getMessage());
+        } catch (JwtException ex) {
+            log.error("JWT validation failed: {}", ex.getMessage());
+        }
+
+        return false;
+    }
 	
 	public Claims getClaimsFromToken(String token) {
 		// Logic to extract claims from the JWT token
@@ -80,11 +91,6 @@ private final JwtProperties jwtProperties;
 		        .build()
 		        .parseClaimsJws(token)
 				.getBody();
-	}
-	
-	public String getUserIdFromToken(String token) {
-		// Logic to extract user ID from the JWT token
-		return getClaimsFromToken(token).getSubject();
 	}
 	
 	public String getUsernameFromToken(String token) {
@@ -103,4 +109,14 @@ private final JwtProperties jwtProperties;
 				        .map(Object::toString)
 				        .toArray(String[]::new); // Return an empty array if no roles are found
 	}
+
+    public Long getUserIdFromToken(String token) {
+        Object userId = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("userId");
+        return Long.valueOf(userId.toString());
+    }
 }
