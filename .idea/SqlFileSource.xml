@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlFileSource">
+    <option name="sources">
+      <map>
+        <entry key="$APPLICATION_CONFIG_DIR$/consoles/database-tool/1c9ba699-b1f1-410b-9123-2b4b79814874/console.sql" value="1c9ba699-b1f1-410b-9123-2b4b79814874" />
+        <entry key="$PROJECT_DIR$/halo/src/main/resources/flyway/V5__REBUILD_TABLE_USER_PERMISSION.sql" value="1c9ba699-b1f1-410b-9123-2b4b79814874" />
+      </map>
+    </option>
+  </component>
+</project>

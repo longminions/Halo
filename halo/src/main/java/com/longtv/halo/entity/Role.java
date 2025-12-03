@@ -21,12 +21,4 @@ public class Role {
 
 
     private String description;
-
-
-    @OneToMany(mappedBy = "role")
-    private List<UserRole> users;
-
-
-    @OneToMany(mappedBy = "role")
-    private List<RolePermission> permissions;
 }

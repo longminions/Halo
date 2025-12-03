@@ -24,9 +24,11 @@ public class RefreshToken {
     @Column(unique = true)
     private String token;
 
-    private Instant expiryDate;
+    private Instant expiryAt;
 
     private boolean revoked;
 
     private Instant createdAt;
+
+    private Instant revokedAt;
 }

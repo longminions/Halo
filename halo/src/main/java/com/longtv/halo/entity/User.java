@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -31,7 +29,4 @@ public class User {
 
     @Column(nullable = false)
     private boolean deleted = false;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Acl> acls = new ArrayList<>();
 }

@@ -10,7 +10,6 @@ import com.longtv.halo.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.time.Instant;
 
 @Service
@@ -47,17 +46,25 @@ public class RefreshService {
 
 
         Instant accessTokenExpiresAt = issuedAt.plusSeconds(jwtProperties.getExpiration());
-        String newAccessToken = jwtTokenProvider.generateAccessToken(user, issuedAt, accessTokenExpiresAt);
 
         //Cấp token mới
         RefreshToken rotated = jwtTokenProvider.rotateRefreshToken(refreshToken, user);
+        rotated.setCreatedAt(issuedAt);
+        rotated.setExpiryAt(accessTokenExpiresAt);
+        refreshTokenRepository.save(rotated);
 
         //Đánh hết hạn cho token cũ
+        refresh.setRevoked(true);
+        refresh.setRevokedAt(issuedAt);
+        refresh.setExpiryAt(issuedAt);
+        refreshTokenRepository.save(refresh);
+        
         Instant refreshTokenExpiresAt = issuedAt.plusSeconds(jwtProperties.getRefreshExpiration());
 
+
         return new TokenResponse(accessToken,
-                rotateRefreshToken.getToken(),
-                jwtProperties.getExpiration(),
-                issuedAt, jwtProperties.getRefreshExpiration());
+                rotated.getToken(),
+                accessTokenExpiresAt,
+                issuedAt, refreshTokenExpiresAt);
     }
 }
